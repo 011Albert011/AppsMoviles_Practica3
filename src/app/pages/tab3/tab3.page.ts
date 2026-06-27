@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Article } from 'src/app/interfaces';
+import { StorageService } from 'src/app/services/storage';
 
 @Component({
   selector: 'app-tab3',
@@ -6,12 +8,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['tab3.page.scss'],
   standalone: false,
 })
-export class Tab3Page implements OnInit{
+export class Tab3Page {
 
-  constructor() {}
-
-  ngOnInit(): void {
-
+  get articles(): Article[]{
+    return this.storageService.getLocalArticles;
   }
+
+  constructor(private storageService: StorageService) {}
 
 }

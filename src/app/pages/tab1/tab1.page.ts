@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { IonInfiniteScroll } from '@ionic/angular';
 import { Article } from 'src/app/interfaces';
 import { News } from 'src/app/services/news';
 
@@ -10,6 +11,8 @@ import { News } from 'src/app/services/news';
 })
 export class Tab1Page implements OnInit{
 
+  @ViewChild(IonInfiniteScroll, {static: true}) infiniteScroll!: IonInfiniteScroll;
+
   public articles:Article[] = [];
 
   constructor(
@@ -19,6 +22,19 @@ export class Tab1Page implements OnInit{
   ngOnInit(): void{
     this.newService.getTopHeadlines()
       .subscribe( articles => this.articles.push(...articles) );
+  }
+
+  loadData(){
+    this.newService.getTopHeadlinesByCategory('business', true)
+      .subscribe( articles => {
+        if ( articles.length === this.articles.length){
+          this.infiniteScroll.disabled = true;
+          return;
+        }
+
+        this.articles = articles;
+        this.infiniteScroll.complete();
+      });
   }
 
 }
